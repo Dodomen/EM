@@ -1,0 +1,19 @@
+function empl = plotReg(emp,emp2, regN) %return normalize number of employees in region (podíl 
+    [a,~,c] = size(emp);
+    for i = 1:a
+        for j = 1:regN(i,1)
+            [up,down,x,y] = rawall(reshape(emp2(i,j,regN(i,2):c),[c+1-regN(i,2),1]),2,c+1-regN(i,2),2,5,10.4);
+            [top,bottom,bottom2] = findDUD(up-1+regN(i,2),down-1+regN(i,2),x,y,reshape(emp2(i,j,regN(i,2):c),[1, c+1-regN(i,2)]),regN(i,2));
+            plot(regN(i,2):c,       reshape(emp(i,j,regN(i,2):c),[c+1-regN(i,2),1]),    'g',...
+                regN(i,2):c,        reshape(emp2(i,j,regN(i,2):c), [c+1-regN(i,2),1]),  'r',...
+                up-1+regN(i,2),     reshape(emp2(i,j,up-1+regN(i,2)), [x, 1]),          'c*',...
+                down-1+regN(i,2),   reshape(emp2(i,j,down-1+regN(i,2)), [y, 1]),        'b*',...
+                top,                emp2(i,j,top),                                      'r+',...
+                bottom,             emp2(i,j,bottom),                                   'r>',...
+                bottom2,            emp2(i,j,bottom2),                                  'r<')
+            title(strcat('Country: ',int2str(i), ' Region: ', int2str(j)))
+            %saveas(gcf,strcat('Barchart',int2str(i),'-',int2str(j),'.png'))
+            pause;
+        end
+    end
+end
